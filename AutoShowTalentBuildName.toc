@@ -1,0 +1,22 @@
+﻿## Interface: 120005
+## Title: AutoShowTalentBuildName
+## Notes: Displays the active talent loadout name as a plain movable text label; configurable via Edit Mode
+## Version: 1.0.0
+## Author: Hydrospanners
+## Category: General
+## SavedVariables: AutoShowTalentBuildNameDB
+
+Libs\LibStub\LibStub.lua
+Libs\LibEditMode\LibEditMode.lua
+Libs\LibEditMode\pools.lua
+Libs\LibEditMode\widgets\button.lua
+Libs\LibEditMode\widgets\checkbox.lua
+Libs\LibEditMode\widgets\dialog.lua
+Libs\LibEditMode\widgets\divider.lua
+Libs\LibEditMode\widgets\dropdown.lua
+Libs\LibEditMode\widgets\expander.lua
+Libs\LibEditMode\widgets\extension.lua
+Libs\LibEditMode\widgets\slider.lua
+Libs\LibEditMode\widgets\colorpicker.lua
+
+AutoShowTalentBuildName.lua
