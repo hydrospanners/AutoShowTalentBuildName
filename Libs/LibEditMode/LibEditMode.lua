@@ -230,8 +230,8 @@ local function onEditModeChanged(_, layoutInfo)
 			securecallfunction(callback, layoutNames[activeLayout], activeLayout)
 		end
 
-		-- update dialog
-		if internal.dialog and internal.dialog.selection then
+		-- update dialog (only while Edit Mode is actually open)
+		if lib.isEditing and internal.dialog and internal.dialog.selection then
 			internal.dialog:Update(internal.dialog.selection)
 		end
 

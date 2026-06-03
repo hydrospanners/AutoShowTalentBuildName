@@ -1,4 +1,4 @@
-# AutoShowTalentBuildName
+﻿# AutoShowTalentBuildName
 
 Displays the active talent loadout name as a plain movable text label; configurable via Edit Mode.
 
@@ -6,9 +6,9 @@ Displays the active talent loadout name as a plain movable text label; configura
 
 1. Go to the [Releases](../../releases/latest) page and download the latest `.zip`
 2. Extract the **AutoShowTalentBuildName** folder into your addons directory:
-   ```
+   `
    World of Warcraft\_retail_\Interface\AddOns\
-   ```
+   `
 3. Log in to WoW or type `/reload` in-game
 
 ## Requirements

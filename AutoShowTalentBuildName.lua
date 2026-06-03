@@ -27,15 +27,42 @@ local function SetFontSize(size)
     ResizeToText()
 end
 
+local function GetSpecID()
+    if PlayerUtil and PlayerUtil.GetCurrentSpecID then
+        return PlayerUtil.GetCurrentSpecID()
+    end
+    local idx = GetSpecialization()
+    return idx and select(1, GetSpecializationInfo(idx))
+end
+
 local function UpdateLabel()
-    local configID = C_ClassTalents and C_ClassTalents.GetActiveConfigID and C_ClassTalents.GetActiveConfigID()
     local name = ""
-    if configID and C_Traits and C_Traits.GetConfigInfo then
-        local info = C_Traits.GetConfigInfo(configID)
-        if info and type(info.name) == "string" and info.name ~= "" then
-            name = info.name
+
+    -- GetLastSelectedSavedConfigID returns the named loadout ("m+ SP"),
+    -- unlike GetActiveConfigID which returns the working/committed config
+    -- that is always named after the spec ("Brewmaster").
+    local specID = GetSpecID()
+    if specID and C_ClassTalents and C_ClassTalents.GetLastSelectedSavedConfigID then
+        local savedID = C_ClassTalents.GetLastSelectedSavedConfigID(specID)
+        if savedID and C_Traits and C_Traits.GetConfigInfo then
+            local info = C_Traits.GetConfigInfo(savedID)
+            if info and type(info.name) == "string" and info.name ~= "" then
+                name = info.name
+            end
         end
     end
+
+    -- Fallback: active config name (will be the spec name if no named loadout is selected)
+    if name == "" and C_ClassTalents and C_ClassTalents.GetActiveConfigID then
+        local configID = C_ClassTalents.GetActiveConfigID()
+        if configID and C_Traits and C_Traits.GetConfigInfo then
+            local info = C_Traits.GetConfigInfo(configID)
+            if info and type(info.name) == "string" and info.name ~= "" then
+                name = info.name
+            end
+        end
+    end
+
     text:SetText(name)
     ResizeToText()
 end
