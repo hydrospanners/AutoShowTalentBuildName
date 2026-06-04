@@ -116,16 +116,23 @@ f:SetScript("OnEvent", function(self, event, ...)
         label:ClearAllPoints()
         label:SetPoint(ns.db.point or "CENTER", UIParent, ns.db.point or "CENTER", ns.db.x, ns.db.y)
         SetFontSize(ns.db.fontSize)
-        UpdateLabel()
+        C_Timer.After(1, UpdateLabel)  -- talent data loads from server after PLAYER_LOGIN
         SetupEditMode()
         self:RegisterEvent("TRAIT_CONFIG_UPDATED")
+        self:RegisterEvent("PLAYER_TALENT_UPDATE")
         self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
         self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+        self:RegisterEvent("PLAYER_ENTERING_WORLD")
         self:UnregisterEvent("PLAYER_LOGIN")
-    elseif event == "TRAIT_CONFIG_UPDATED"
-        or event == "ACTIVE_TALENT_GROUP_CHANGED"
+    elseif event == "TRAIT_CONFIG_UPDATED" or event == "PLAYER_TALENT_UPDATE" then
+        -- GetLastSelectedSavedConfigID isn't updated yet when these fire;
+        -- wait a short moment for the talent system to settle (same pattern as NaowhQOL)
+        C_Timer.After(0.5, UpdateLabel)
+    elseif event == "ACTIVE_TALENT_GROUP_CHANGED"
         or event == "PLAYER_SPECIALIZATION_CHANGED" then
-        UpdateLabel()
+        C_Timer.After(0.5, UpdateLabel)
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        C_Timer.After(1, UpdateLabel)
     end
 end)
 
