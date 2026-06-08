@@ -1,9 +1,9 @@
-﻿## Interface: 120005
+## Interface: 120005
 ## Title: AutoShowTalentBuildName
 ## Notes: Displays the active talent loadout name as a plain movable text label; configurable via Edit Mode
 ## Version: 1.0.2
 ## Author: Hydrospanners
-## Category: General
+## Category: User Interface
 ## SavedVariables: AutoShowTalentBuildNameDB
 
 Libs\LibStub\LibStub.lua
