@@ -6,6 +6,7 @@ local DEFAULTS = {
     x        = 0,
     y        = 200,
     fontSize = 14,
+    showSpec = false,
 }
 
 -- ── label frame ───────────────────────────────────────────────────────────────
@@ -16,6 +17,8 @@ label:SetClampedToScreen(true)
 
 local text = label:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 text:SetPoint("TOPLEFT")
+text:SetJustifyH("LEFT")
+text:SetJustifyV("TOP")
 
 local function ResizeToText()
     label:SetSize(math.max(text:GetStringWidth(), 10), math.max(text:GetStringHeight(), 10))
@@ -35,8 +38,15 @@ local function GetSpecID()
     return idx and select(1, GetSpecializationInfo(idx))
 end
 
+local function GetSpecName()
+    local idx = GetSpecialization()
+    if idx then
+        return select(2, GetSpecializationInfo(idx))
+    end
+end
+
 local function UpdateLabel()
-    local name = ""
+    local buildName = ""
 
     -- GetLastSelectedSavedConfigID returns the named loadout ("m+ SP"),
     -- unlike GetActiveConfigID which returns the working/committed config
@@ -47,23 +57,35 @@ local function UpdateLabel()
         if savedID and C_Traits and C_Traits.GetConfigInfo then
             local info = C_Traits.GetConfigInfo(savedID)
             if info and type(info.name) == "string" and info.name ~= "" then
-                name = info.name
+                buildName = info.name
             end
         end
     end
 
     -- Fallback: active config name (will be the spec name if no named loadout is selected)
-    if name == "" and C_ClassTalents and C_ClassTalents.GetActiveConfigID then
+    if buildName == "" and C_ClassTalents and C_ClassTalents.GetActiveConfigID then
         local configID = C_ClassTalents.GetActiveConfigID()
         if configID and C_Traits and C_Traits.GetConfigInfo then
             local info = C_Traits.GetConfigInfo(configID)
             if info and type(info.name) == "string" and info.name ~= "" then
-                name = info.name
+                buildName = info.name
             end
         end
     end
 
-    text:SetText(name)
+    local displayText = buildName
+    if ns.db.showSpec then
+        local specName = GetSpecName()
+        if specName and specName ~= "" then
+            if buildName ~= "" and buildName ~= specName then
+                displayText = specName .. "\n" .. buildName
+            else
+                displayText = specName
+            end
+        end
+    end
+
+    text:SetText(displayText)
     ResizeToText()
 end
 
@@ -80,6 +102,17 @@ local function SetupEditMode()
     end, { point = DEFAULTS.point, x = DEFAULTS.x, y = DEFAULTS.y }, "AutoShowTalentBuildName")
 
     lib:AddFrameSettings(label, {
+        {
+            kind      = lib.SettingType.Checkbox,
+            name      = "Show Spec",
+            desc      = "Show specialization name above the talent build name",
+            default   = DEFAULTS.showSpec,
+            get = function() return ns.db.showSpec end,
+            set = function(_, value)
+                ns.db.showSpec = value
+                UpdateLabel()
+            end,
+        },
         {
             kind      = lib.SettingType.Slider,
             name      = "Font Size",
