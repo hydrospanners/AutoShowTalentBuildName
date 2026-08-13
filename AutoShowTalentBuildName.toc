@@ -1,7 +1,7 @@
-## Interface: 120007, 120100
+## Interface: 120100
 ## Title: AutoShowTalentBuildName
 ## Notes: Displays the active talent loadout name as a plain movable text label; configurable via Edit Mode
-## Version: 1.0.4
+## Version: 1.0.5
 ## Author: Hydrospanners
 ## Category: User Interface
 ## SavedVariables: AutoShowTalentBuildNameDB
