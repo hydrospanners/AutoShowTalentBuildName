@@ -1,4 +1,4 @@
-## Interface: 120100
+## Interface: 120100, 120105
 ## Title: AutoShowTalentBuildName
 ## Notes: Displays the active talent loadout name as a plain movable text label; configurable via Edit Mode
 ## Version: 1.0.5
